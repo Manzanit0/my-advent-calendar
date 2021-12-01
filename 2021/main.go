@@ -24,6 +24,7 @@ func Day1Part1(inputPath string) {
 	previousDepth := -1 // Assumption that no negative depths provided.
 
 	for _, rawDepth := range rawDepths {
+		// Ignore EOF when reading input
 		if rawDepth == "" {
 			continue
 		}
@@ -62,7 +63,7 @@ func Day1Part2(inputPath string) {
 
 	calculateSlidingWindowSums := func(rawDepths []string) []int {
 		window := []int{}
-		sorted := []int{}
+		result := []int{}
 
 		for _, r := range rawDepths {
 			// Ignore EOF when reading input
@@ -79,17 +80,17 @@ func Day1Part2(inputPath string) {
 			}
 
 			sum := window[0] + window[1] + window[2]
-			sorted = append(sorted, sum)
+			result = append(result, sum)
 
 			// Slide the window
 			window = append(window, depth)[1:]
 		}
 
-		// Sum the last window.
+		// Add the last window's sum.
 		sum := window[0] + window[1] + window[2]
-		sorted = append(sorted, sum)
+		result = append(result, sum)
 
-		return sorted
+		return result
 	}
 
 	depthIncreases := 0
