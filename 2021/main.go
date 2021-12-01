@@ -10,8 +10,12 @@ import (
 
 func main() {
 	Day1Part1("./input_1.txt")
+	Day1Part2("./input_2.txt")
 }
 
+// Day1Part1 basically scans the input (list of depth variations) for an
+// increase between the previous depth and the current one, tracking the amount
+// of increases.
 func Day1Part1(inputPath string) {
 	input := ReadInput(inputPath)
 	rawDepths := strings.Split(input, "\n")
@@ -39,6 +43,72 @@ func Day1Part1(inputPath string) {
 	}
 
 	fmt.Printf("Solution to Day 1 Part 1: %d\n", depthIncreases)
+}
+
+// Day1Part2 scans for increases but with a sliding window such as:
+// 199  A
+// 200  A B
+// 208  A B C
+// 210    B C D
+// 200  E   C D
+// 207  E F   D
+// 240  E F G
+// 269    F G H
+// 260      G H
+// 263        H
+func Day1Part2(inputPath string) {
+	input := ReadInput(inputPath)
+	rawDepths := strings.Split(input, "\n")
+
+	calculateSlidingWindowSums := func(rawDepths []string) []int {
+		window := []int{}
+		sorted := []int{}
+
+		for _, r := range rawDepths {
+			// Ignore EOF when reading input
+			if r == "" {
+				continue
+			}
+
+			depth := ToInt(r)
+
+			// If the window isn't full, keep pushing elements.
+			if len(window) < 3 {
+				window = append(window, depth)
+				continue
+			}
+
+			sum := window[0] + window[1] + window[2]
+			sorted = append(sorted, sum)
+
+			// Slide the window
+			window = append(window, depth)[1:]
+		}
+
+		// Sum the last window.
+		sum := window[0] + window[1] + window[2]
+		sorted = append(sorted, sum)
+
+		return sorted
+	}
+
+	depthIncreases := 0
+	previousDepth := -1 // Assumption that no negative depths provided.
+
+	for _, currentDepth := range calculateSlidingWindowSums(rawDepths) {
+		if previousDepth == -1 {
+			previousDepth = currentDepth
+			continue
+		}
+
+		if previousDepth < currentDepth {
+			depthIncreases++
+		}
+
+		previousDepth = currentDepth
+	}
+
+	fmt.Printf("Solution to Day 1 Part 2: %d\n", depthIncreases)
 }
 
 func ReadInput(filename string) string {
