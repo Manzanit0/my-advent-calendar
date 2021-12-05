@@ -11,7 +11,7 @@ multiply_course = fn %{horizontal: n, depth: m} -> n * m end
 
 IO.write("Day 2 part 1: ")
 
-File.read!("./input_day_2.txt")
+File.read!("day_2.txt")
 |> then(parse_input)
 |> Enum.reduce(%{depth: 0, horizontal: 0}, fn
   "forward " <> n, acc ->
@@ -35,7 +35,7 @@ end)
 ### DAY 2 PART 2
 IO.write("Day 2 part 2: ")
 
-File.read!("./input_day_2.txt")
+File.read!("day_2.txt")
 |> then(parse_input)
 |> Enum.reduce(%{depth: 0, horizontal: 0, aim: 0}, fn
   "forward " <> n, acc ->

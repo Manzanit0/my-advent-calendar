@@ -25,7 +25,7 @@ end
 ### PART 1
 IO.write("Day 1 part 1: ")
 
-File.read!("./input_1.txt")
+File.read!("day_1.txt")
 |> then(parse_input)
 |> then(count_increasing)
 |> Kernel.elem(1)
@@ -46,7 +46,7 @@ end
 
 IO.write("Day 1 part 2: ")
 
-File.read!("./input_2.txt")
+File.read!("day_1.txt")
 |> then(parse_input)
 |> then(calculate_windows)
 |> then(count_increasing)
